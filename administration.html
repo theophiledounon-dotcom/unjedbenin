@@ -207,7 +207,8 @@
       }
       posts.forEach(function (post) {
         var card = document.createElement("div");
-        card.className = "card reveal";
+       card.className = "card";
+
         var mediaHtml = "";
         if (post.file_url) {
           mediaHtml = '<p style="font-size:0.82rem;"><a href="' + API_BASE + post.file_url + '" target="_blank" rel="noopener">Voir le fichier</a></p>';
