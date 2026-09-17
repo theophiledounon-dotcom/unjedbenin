@@ -295,7 +295,13 @@ def health():
     return jsonify({"status": "ok"})
 
 
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+with app.app_context():
+    db.create_all()
+    # Création automatique de l'admin s'il n'existe pas encore
+    if not Admin.query.filter_by(username="unjedbeninofficiel").first():
+        admin = Admin(username="unjedbeninofficiel", display_name="UNJED-BENIN")
+        admin.set_password("Unjedbenin@2025@")  # Mettez votre vrai mot de passe ici
+        db.session.add(admin)
+        db.session.commit()
+        print("Compte administrateur créé avec succès !")
+
