@@ -44,7 +44,7 @@
           <span class="eyebrow" data-en="All news">Toutes les actualités</span>
           <h2 data-en="Our latest publications">Nos dernières publications</h2>
         </div>
-        <div class="grid grid-3">
+       <div id="news-grid" class="grid grid-3">
           <article class="card news-card reveal">
             <div class="news-img"><img src="public/images/assemblee-real-1.jpg" alt="Séminaire de gouvernance associative" /></div>
             <div class="news-body">
@@ -124,6 +124,46 @@
   </main>
 
   <div data-footer></div>
+
+  <script>
+(function () {
+  var API_BASE = "https://unjedbenin.onrender.com";
+  var grid = document.getElementById("news-grid");
+
+  fetch(API_BASE + "/api/posts?visibility=public")
+    .then(function (res) { return res.json(); })
+    .then(function (posts) {
+      var annonces = posts.filter(function (p) {
+        return p.post_type === "announcement" || p.post_type === "document";
+      });
+
+      if (!annonces.length) return;
+
+      // Remplace les faux articles par vos vraies publications
+      grid.innerHTML = "";
+      annonces.forEach(function (p) {
+        var art = document.createElement("article");
+        art.className = "card news-card";
+        var fileLink = p.file_url 
+          ? '<p style="margin-top:10px;"><a href="' + API_BASE + p.file_url + '" class="btn btn-outline" target="_blank" rel="noopener">Télécharger le document</a></p>' 
+          : '';
+        art.innerHTML =
+          '<div class="card-body">' +
+            '<span class="news-tag">' + (p.post_type === "document" ? "Décision / Document" : "Annonce") + '</span>' +
+            '<span class="news-date">' + (p.created_at || "") + '</span>' +
+            '<h3 style="margin-top:8px;">' + p.title + '</h3>' +
+            '<p>' + (p.body || "") + '</p>' +
+            fileLink +
+          '</div>';
+        grid.appendChild(art);
+      });
+    })
+    .catch(function (err) {
+      console.error("Erreur chargement actualités:", err);
+    });
+})();
+</script>
+
   <script src="components.js"></script>
   <script src="script.js"></script>
 </body>
