@@ -221,6 +221,54 @@ def list_subscribers():
     subs = Subscriber.query.order_by(Subscriber.created_at.desc()).all()
     return jsonify([s.to_dict() for s in subs])
 
+from flask import send_file
+from models import Member, ContactMessage
+
+# Endpoint pour enregistrer les adhésions
+@app.post("/api/adhesion")
+def submit_adhesion():
+    data = request.get_json(silent=True) or {}
+    country = (data.get("country") or "").strip()
+    if country == "Autre":
+        country = (data.get("country_other") or "").strip() or "Autre"
+
+    full_name = (data.get("fullname") or "").strip()
+    email = (data.get("email") or "").strip()
+    phone = (data.get("phone") or "").strip()
+
+    if not full_name or not email or not phone:
+        return jsonify({"error": "Nom, email et téléphone obligatoires"}), 400
+
+    member = Member(
+        member_type=data.get("member_type", "Personne physique"),
+        full_name=full_name,
+        email=email,
+        phone=phone,
+        country=country,
+        dept_or_region=data.get("dept") if country == "Bénin" else data.get("region"),
+        profile=data.get("profile_other") if data.get("profile") == "Autre" else data.get("profile", ""),
+        motivation=data.get("motivation", "")
+    )
+    db.session.add(member)
+    db.session.commit()
+    return jsonify({"ok": True, "message": "Adhésion enregistrée avec succès"}), 201
+
+
+# Endpoint pour télécharger directement une décision ou annonce en PDF
+@app.get("/api/posts/download/<int:post_id>")
+def download_post_pdf(post_id):
+    post = db.session.get(Post, post_id)
+    if not post or not post.file_url:
+        return jsonify({"error": "Fichier introuvable"}), 404
+        
+    file_path = os.path.join(BASE_DIR, post.file_url.lstrip("/"))
+    return send_file(
+        file_path,
+        as_attachment=True,
+        download_name=post.original_filename or f"Decision_UNJED_{post.id}.pdf"
+    )
+
+
 
 # ---------------------------------------------------------------------------
 # Emplacement réservé : PAIEMENT ADHESION (FedaPay / Kkiapay)
