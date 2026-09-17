@@ -9,7 +9,7 @@ db = SQLAlchemy()
 
 
 class Admin(db.Model):
-    """Un compte administrateur (Théophile + responsables)."""
+    """Compte administrateur sécurisé."""
     __tablename__ = "admins"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -30,21 +30,22 @@ class Admin(db.Model):
 
 class Post(db.Model):
     """
-    Une publication faite par un admin : annonce, document, lien, image ou vidéo.
-    - post_type: "announcement" | "document" | "link" | "image" | "video"
-    - visibility: "public" (visible sur le site, ex. Actualités) | "members" (espace interne uniquement)
-    - file_url: chemin du fichier uploadé (document/image/vidéo uploadée), sinon None
-    - external_url: lien externe (ex. YouTube/Vimeo, ou lien libre), sinon None
+    Publications des administrateurs :
+    - 'announcement' : Annonces textuelles / communiqués (vers Actualités)
+    - 'decision'     : Décisions officielles avec fichier PDF téléchargeable (vers Actualités)
+    - 'image'        : Photos des activités (vers Multimédia)
+    - 'video'        : Vidéos des activités (vers Multimédia)
     """
     __tablename__ = "posts"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     body = db.Column(db.Text, nullable=True)
-    post_type = db.Column(db.String(20), nullable=False, default="announcement")
-    visibility = db.Column(db.String(10), nullable=False, default="members")
+    post_type = db.Column(db.String(30), nullable=False, default="announcement")
+    visibility = db.Column(db.String(10), nullable=False, default="public")
     file_url = db.Column(db.String(500), nullable=True)
-    external_url = db.Column(db.String(500), nullable=True)
+    original_filename = db.Column(db.String(255), nullable=True)  # Nom du PDF pour le téléchargement
+    external_url = db.Column(db.String(500), nullable=True)      # Lien YouTube / vidéo
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=True)
 
@@ -58,19 +59,62 @@ class Post(db.Model):
             "post_type": self.post_type,
             "visibility": self.visibility,
             "file_url": self.file_url,
+            "original_filename": self.original_filename,
             "external_url": self.external_url,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "author": self.author.display_name if self.author else None,
+            "created_at": self.created_at.strftime("%d %B %Y") if self.created_at else None,
+            "author": self.author.display_name if self.author else "Bureau Exécutif",
         }
 
 
-class Subscriber(db.Model):
-    """Une personne qui s'est abonnée aux actualités du site."""
-    __tablename__ = "subscribers"
+class Member(db.Model):
+    """Adhésions reçues en ligne."""
+    __tablename__ = "members"
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)
+    member_type = db.Column(db.String(50), default="Personne physique")
+    full_name = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(150), nullable=False)
+    phone = db.Column(db.String(50), nullable=False)
+    country = db.Column(db.String(100), nullable=False)
+    dept_or_region = db.Column(db.String(100), nullable=True)
+    profile = db.Column(db.String(100), nullable=False)
+    motivation = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):
-        return {"id": self.id, "email": self.email, "created_at": self.created_at.isoformat()}
+        return {
+            "id": self.id,
+            "member_type": self.member_type,
+            "full_name": self.full_name,
+            "email": self.email,
+            "phone": self.phone,
+            "country": self.country,
+            "dept_or_region": self.dept_or_region,
+            "profile": self.profile,
+            "motivation": self.motivation,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
+
+
+class ContactMessage(db.Model):
+    """Messages envoyés depuis la page Contact."""
+    __tablename__ = "contact_messages"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(150), nullable=False)
+    phone = db.Column(db.String(50), nullable=True)
+    subject = db.Column(db.String(200), nullable=True)
+    message = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "phone": self.phone,
+            "subject": self.subject,
+            "message": self.message,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
