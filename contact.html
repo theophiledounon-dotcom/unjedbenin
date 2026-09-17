@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a8a3f" />
+  <title>Contact — UNJED-BENIN</title>
+  <meta name="description" content="Contactez l'UNJED-BENIN. Écrivez-nous, appelez-nous ou rendez-nous visite pour collaborer ou rejoindre l'Union." />
+  <link rel="icon" href="public/images/logo.jpeg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div data-header></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="index.html" data-en="Home">Accueil</a> / <span data-en="Contact">Contact</span></div>
+        <h1 data-en="Contact us">Contactez-nous</h1>
+        <p data-en="A question, a collaboration project or a desire to commit? Our team is at your disposal.">Une question, un projet de collaboration ou une envie de vous engager ? Notre équipe est à votre disposition.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <!-- INFOS -->
+          <div class="reveal">
+            <h2 data-en="Our contact details">Nos coordonnées</h2>
+            <ul class="contact-info">
+              <li>
+                <span class="contact-ic icon-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                <div><strong data-en="Address">Adresse</strong><p data-en="Cotonou, Republic of Benin">Cotonou, République du Bénin</p></div>
+              </li>
+              <li>
+                <span class="contact-ic icon-yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+                <div><strong data-en="Phone">Téléphone</strong><p><a href="https://wa.me/229160137141" target="_blank" rel="noopener" style="color:inherit;">+229 01 60 13 71 41</a></p></div>
+              </li>
+              <li>
+                <span class="contact-ic icon-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+                <div><strong data-en="Email">Email</strong><p>unjedbenin@gmail.com</p></div>
+              </li>
+            </ul>
+
+            <h3 style="margin-top:2rem;" data-en="Follow us">Suivez-nous</h3>
+            <div class="social-row" data-social></div>
+          </div>
+
+          <!-- FORMULAIRE -->
+          <div class="form-card reveal">
+            <h2 data-en="Send us a message">Envoyez-nous un message</h2>
+            <form id="contact-form" class="form">
+
+            <input type="hidden" name="access_key" value="ff1e33f2-ea1e-483a-9256-ff4f7bd5187b" />
+            <input type="hidden" name="subject" value=" Nouvelle demande d'adhésion — UNJED-BÉNIN" />
+            <input type="hidden" name="from_name" value="Formulaire Adhésion UNJED" />
+            <input type="hidden" name="redirect" value="false" />
+              <div class="field">
+                <label for="cname" data-en="Full name">Nom complet</label>
+                <input type="text" id="cname" name="cname" required />
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label for="cemail" data-en="Email">Email</label>
+                  <input type="email" id="cemail" name="cemail" required />
+                </div>
+                <div class="field">
+                  <label for="cphone" data-en="Phone">Téléphone</label>
+                  <input type="tel" id="cphone" name="cphone" />
+                </div>
+              </div>
+              <div class="field">
+                <label for="csubject" data-en="Subject">Objet</label>
+                <input type="text" id="csubject" name="csubject" required />
+              </div>
+              <div class="field">
+                <label for="cmessage" data-en="Message">Message</label>
+                <textarea id="cmessage" name="cmessage" rows="5" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-green btn-block" data-en="Send message">Envoyer le message</button>
+              <p class="form-success" id="contact-success" hidden data-en="Thank you! Your message has been sent. We will reply as soon as possible.">Merci ! Votre message a bien été envoyé. Nous vous répondrons dans les meilleurs délais.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div data-footer></div>
+  <script src="components.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

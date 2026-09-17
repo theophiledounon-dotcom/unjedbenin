@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a8a3f" />
+  <title>Multimédia — UNJED-BENIN</title>
+  <meta name="description" content="Galerie photo et vidéo de l'UNJED-BENIN : revivez nos formations, actions de solidarité, événements culturels et moments forts." />
+  <link rel="icon" href="public/images/logo.jpeg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div data-header></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="index.html" data-en="Home">Accueil</a> / <span data-en="Multimedia">Multimédia</span></div>
+        <h1 data-en="Multimedia gallery">Galerie multimédia</h1>
+        <p data-en="Relive in images and videos the strong moments of our actions across Benin.">Revivez en images et en vidéos les moments forts de nos actions à travers le Bénin.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" data-en="Photo gallery">Galerie photo</span>
+          <h2 data-en="Our actions in pictures">Nos actions en images</h2>
+        </div>
+        <div class="gallery" id="gallery-static">
+          <figure class="gallery-item reveal"><img src="public/images/formation-real-3.jpg" alt="Atelier de formation des jeunes" /><figcaption data-en="Youth training workshop">Atelier de formation des jeunes</figcaption></figure>
+          <figure class="gallery-item reveal"><img src="public/images/leadership.png" alt="Conférence sur le leadership citoyen" /><figcaption data-en="Citizen leadership conference">Conférence sur le leadership citoyen</figcaption></figure>
+          <figure class="gallery-item reveal"><img src="public/images/solidarite.png" alt="Action de solidarité communautaire" /><figcaption data-en="Community solidarity action">Action de solidarité communautaire</figcaption></figure>
+          <figure class="gallery-item reveal"><img src="public/images/culture.png" alt="Événement culturel et artistique" /><figcaption data-en="Cultural and artistic event">Événement culturel et artistique</figcaption></figure>
+          <figure class="gallery-item reveal"><img src="public/images/assemblee-real-3.jpg" alt="Assemblée générale des membres" /><figcaption data-en="General assembly of members">Assemblée générale des membres</figcaption></figure>
+          <figure class="gallery-item reveal"><img src="public/images/jeunesse-real-1.jpg" alt="Rassemblement de la jeunesse engagée" /><figcaption data-en="Engaged youth gathering">Rassemblement de la jeunesse engagée</figcaption></figure>
+        </div>
+        <div class="gallery" id="gallery-dynamic" style="margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--surface-2);">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" data-en="Videos">Vidéos</span>
+          <h2 data-en="Watch our reports">Regardez nos reportages</h2>
+        </div>
+        <div class="grid grid-3">
+          <article class="card video-card reveal">
+            <div class="video-thumb"><img src="public/images/leadership.png" alt="Reportage leadership" /><span class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="news-body"><h3 data-en="Citizen leadership program 2026">Programme de leadership citoyen 2026</h3></div>
+          </article>
+          <article class="card video-card reveal">
+            <div class="video-thumb"><img src="public/images/solidarite.png" alt="Reportage solidarité" /><span class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="news-body"><h3 data-en="National solidarity campaign">Campagne nationale de solidarité</h3></div>
+          </article>
+          <article class="card video-card reveal">
+            <div class="video-thumb"><img src="public/images/culture.png" alt="Reportage culture" /><span class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="news-body"><h3 data-en="Festival of Beninese youth culture">Festival de la culture des jeunes béninois</h3></div>
+          </article>
+        </div>
+        <div class="grid grid-3" id="videos-dynamic" style="margin-top:16px;"></div>
+        <div style="text-align:center; margin-top:2rem;" class="reveal">
+          <a href="#" class="btn btn-outline" data-en="Visit our YouTube channel">Visitez notre chaîne YouTube</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--surface-2);">
+      <div class="container">
+        <div class="cta-band reveal" style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;">
+          <div>
+            <span class="eyebrow" data-en="New">Nouveau</span>
+            <h2 style="margin:6px 0;" data-en="Test your knowledge of UNJED-BENIN">Testez vos connaissances sur l'UNJED-BENIN</h2>
+            <p style="margin:0;color:var(--text-muted);" data-en="Mots mêlés and rebuild-the-sentence game, based on our values and actions.">Jeu de mots mêlés et de phrase à reconstituer, autour de nos valeurs et de nos actions.</p>
+          </div>
+          <a href="jeu.html" class="btn btn-green" data-en="Play now">Jouer maintenant</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div data-footer></div>
+  <script src="components.js"></script>
+  <script src="script.js"></script>
+  <script>
+  (function () {
+    "use strict";
+
+    // ⚠️ A CONFIGURER : même adresse que dans administration.html
+    var API_BASE = "https://VOTRE-USERNAME.pythonanywhere.com";
+    if (API_BASE.indexOf("VOTRE-USERNAME") !== -1) return; // backend pas encore branché
+
+    function youtubeEmbedUrl(url) {
+      var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
+      return m ? "https://www.youtube.com/embed/" + m[1] : null;
+    }
+
+    fetch(API_BASE + "/api/posts?visibility=public")
+      .then(function (res) { return res.json(); })
+      .then(function (posts) {
+        var galleryEl = document.getElementById("gallery-dynamic");
+        var videosEl = document.getElementById("videos-dynamic");
+
+        posts.filter(function (p) { return p.post_type === "image"; }).forEach(function (p) {
+          if (!p.file_url) return;
+          var fig = document.createElement("figure");
+          fig.className = "gallery-item reveal";
+          var img = document.createElement("img");
+          img.src = API_BASE + p.file_url;
+          img.alt = p.title;
+          var cap = document.createElement("figcaption");
+          cap.textContent = p.title;
+          fig.appendChild(img);
+          fig.appendChild(cap);
+          galleryEl.appendChild(fig);
+        });
+
+        posts.filter(function (p) { return p.post_type === "video"; }).forEach(function (p) {
+          var article = document.createElement("article");
+          article.className = "card video-card reveal";
+          var embedUrl = p.external_url ? youtubeEmbedUrl(p.external_url) : null;
+          var mediaHtml;
+          if (embedUrl) {
+            mediaHtml = '<div class="video-thumb"><iframe src="' + embedUrl + '" style="width:100%;aspect-ratio:16/9;border:0;" allowfullscreen loading="lazy"></iframe></div>';
+          } else if (p.file_url) {
+            mediaHtml = '<div class="video-thumb"><video src="' + API_BASE + p.file_url + '" controls style="width:100%;"></video></div>';
+          } else if (p.external_url) {
+            mediaHtml = '<div class="video-thumb"><a href="' + p.external_url + '" target="_blank" rel="noopener">Voir la vidéo</a></div>';
+          } else {
+            mediaHtml = "";
+          }
+          article.innerHTML = mediaHtml + '<div class="news-body"><h3></h3></div>';
+          article.querySelector("h3").textContent = p.title;
+          videosEl.appendChild(article);
+        });
+      })
+      .catch(function () { /* backend injoignable : la galerie statique reste affichée normalement */ });
+  })();
+  </script>
+</body>
+</html>

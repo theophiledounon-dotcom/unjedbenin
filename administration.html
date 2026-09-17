@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a8a3f" />
+  <title>Administration — UNJED-BENIN</title>
+  <meta name="description" content="Espace interne réservé aux administrateurs de l'UNJED-BENIN : publication d'annonces, documents et médias." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="public/images/logo.jpeg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div data-header></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="index.html" data-en="Home">Accueil</a> / <span data-en="Administration">Administration</span></div>
+        <h1 data-en="Administration">Administration</h1>
+        <p data-en="Space reserved for UNJED-BENIN administrators.">Espace réservé aux administrateurs de l'UNJED-BENIN.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+
+        <!-- ECRAN DE CONNEXION -->
+        <div id="admin-login" class="card reveal" style="max-width:420px;margin:0 auto;padding:32px;">
+          <h2 style="margin-bottom:6px;" data-en="Administrator login">Connexion administrateur</h2>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:20px;" data-en="Enter your credentials to access the administration space.">Entrez vos identifiants pour accéder à l'espace d'administration.</p>
+          <form id="admin-login-form" class="form" autocomplete="off">
+            <div class="field">
+              <label for="admin-username" data-en="Username">Nom d'utilisateur</label>
+              <input type="text" id="admin-username" name="username" autocomplete="username" required />
+            </div>
+            <div class="field">
+              <label for="admin-password" data-en="Password">Mot de passe</label>
+              <input type="password" id="admin-password" name="password" autocomplete="current-password" required />
+            </div>
+            <p id="admin-login-error" style="color:#C0392B;font-weight:600;font-size:0.88rem;display:none;"></p>
+            <button type="submit" class="btn btn-green" style="justify-content:center;" data-en="Log in">Se connecter</button>
+          </form>
+          <p id="admin-api-warning" style="display:none;color:#C0392B;font-size:0.82rem;margin-top:16px;">
+            Le serveur d'administration (API_BASE dans le code) n'est pas encore configuré — remplace <code>API_BASE</code> dans le script en bas de cette page par l'adresse de ton backend PythonAnywhere.
+          </p>
+        </div>
+
+        <!-- ESPACE ADMIN -->
+        <div id="admin-space" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+            <p style="margin:0;color:var(--text-muted);" data-en="Logged in as">Connecté en tant que <strong id="admin-name-label"></strong></p>
+            <button type="button" id="admin-logout" class="btn btn-outline" data-en="Log out">Se déconnecter</button>
+          </div>
+
+          <!-- FORMULAIRE DE PUBLICATION -->
+          <div class="card reveal" style="padding:28px 32px;margin-bottom:40px;">
+            <h2 style="margin-bottom:16px;" data-en="New publication">Nouvelle publication</h2>
+            <form id="post-form" class="form">
+              <div class="form-row">
+                <div class="field">
+                  <label for="post-title" data-en="Title">Titre</label>
+                  <input type="text" id="post-title" name="title" required />
+                </div>
+                <div class="field">
+                  <label for="post-type" data-en="Type">Type</label>
+                  <select id="post-type" name="post_type">
+                    <option value="announcement" data-en="Announcement">Annonce</option>
+                    <option value="document" data-en="Document">Document</option>
+                    <option value="link" data-en="Link">Lien</option>
+                    <option value="image" data-en="Image">Image</option>
+                    <option value="video" data-en="Video">Vidéo</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="post-body" data-en="Text">Texte</label>
+                <textarea id="post-body" name="body" rows="4"></textarea>
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label for="post-file" data-en="File (image, document, or uploaded video)">Fichier (image, document, ou vidéo à uploader)</label>
+                  <input type="file" id="post-file" name="file" />
+                </div>
+                <div class="field">
+                  <label for="post-external" data-en="External link (YouTube, Vimeo, or any URL)">Lien externe (YouTube, Vimeo, ou toute URL)</label>
+                  <input type="url" id="post-external" name="external_url" placeholder="https://..." />
+                </div>
+              </div>
+              <div class="field">
+                <label for="post-visibility" data-en="Visibility">Visibilité</label>
+                <select id="post-visibility" name="visibility">
+                  <option value="members" data-en="Members only (internal space)">Membres uniquement (espace interne)</option>
+                  <option value="public" data-en="Public (visible on the site)">Public (visible sur le site)</option>
+                </select>
+              </div>
+              <p id="post-error" style="color:#C0392B;font-weight:600;font-size:0.88rem;display:none;"></p>
+              <button type="submit" class="btn btn-green" data-en="Publish">Publier</button>
+            </form>
+          </div>
+
+          <!-- LISTE DES PUBLICATIONS -->
+          <div class="section-header reveal" style="margin-bottom:24px;">
+            <span class="eyebrow" data-en="All publications">Toutes les publications</span>
+            <h2 data-en="Manage content">Gérer le contenu</h2>
+          </div>
+          <div id="posts-list" style="display:flex;flex-direction:column;gap:16px;max-width:760px;"></div>
+
+          <!-- ABONNES -->
+          <div class="section-header reveal" style="margin:48px 0 24px;">
+            <span class="eyebrow" data-en="Subscribers">Abonnés</span>
+            <h2 data-en="Newsletter subscriber list">Liste des abonnés</h2>
+          </div>
+          <div id="subscribers-list" style="max-width:760px;"></div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <div data-footer></div>
+  <script src="components.js"></script>
+  <script src="script.js"></script>
+  <script>
+  (function () {
+    "use strict";
+
+    // ⚠️ A CONFIGURER : remplace par l'adresse de ton backend PythonAnywhere
+    // Exemple : "https://theophile.pythonanywhere.com"
+    var API_BASE = "https://VOTRE-USERNAME.pythonanywhere.com";
+
+    var loginPanel = document.getElementById("admin-login");
+    var spacePanel = document.getElementById("admin-space");
+    var loginForm = document.getElementById("admin-login-form");
+    var loginError = document.getElementById("admin-login-error");
+    var apiWarning = document.getElementById("admin-api-warning");
+    var logoutBtn = document.getElementById("admin-logout");
+    var nameLabel = document.getElementById("admin-name-label");
+    var postForm = document.getElementById("post-form");
+    var postError = document.getElementById("post-error");
+    var postsList = document.getElementById("posts-list");
+    var subscribersList = document.getElementById("subscribers-list");
+
+    if (API_BASE.indexOf("VOTRE-USERNAME") !== -1) {
+      apiWarning.style.display = "block";
+    }
+
+    function api(path, options) {
+      options = options || {};
+      options.credentials = "include";
+      return fetch(API_BASE + path, options).then(function (res) {
+        return res.json().then(function (data) {
+          return { ok: res.ok, status: res.status, data: data };
+        });
+      });
+    }
+
+    function showSpace(admin) {
+      loginPanel.style.display = "none";
+      spacePanel.style.display = "block";
+      nameLabel.textContent = admin.display_name;
+      loadPosts();
+      loadSubscribers();
+    }
+    function showLogin() {
+      loginPanel.style.display = "block";
+      spacePanel.style.display = "none";
+    }
+
+    // Vérifie si déjà connecté (session cookie)
+    api("/api/admin/me").then(function (r) {
+      if (r.ok && r.data.admin) showSpace(r.data.admin);
+    }).catch(function () { /* backend pas encore joignable, on reste sur le login */ });
+
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      loginError.style.display = "none";
+      var username = document.getElementById("admin-username").value.trim();
+      var password = document.getElementById("admin-password").value;
+      api("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: username, password: password }),
+      }).then(function (r) {
+        if (r.ok) {
+          showSpace(r.data.admin);
+        } else {
+          loginError.textContent = r.data.error || "Connexion impossible.";
+          loginError.style.display = "block";
+        }
+      }).catch(function () {
+        loginError.textContent = "Impossible de joindre le serveur d'administration.";
+        loginError.style.display = "block";
+      });
+    });
+
+    logoutBtn.addEventListener("click", function () {
+      api("/api/admin/logout", { method: "POST" }).finally(showLogin);
+    });
+
+    function postTypeLabel(t) {
+      return { announcement: "Annonce", document: "Document", link: "Lien", image: "Image", video: "Vidéo" }[t] || t;
+    }
+
+    function renderPosts(posts) {
+      postsList.innerHTML = "";
+      if (!posts.length) {
+        postsList.innerHTML = '<p style="color:var(--text-muted);">Aucune publication pour le moment.</p>';
+        return;
+      }
+      posts.forEach(function (post) {
+        var card = document.createElement("div");
+        card.className = "card reveal";
+        var mediaHtml = "";
+        if (post.file_url) {
+          mediaHtml = '<p style="font-size:0.82rem;"><a href="' + API_BASE + post.file_url + '" target="_blank" rel="noopener">Voir le fichier</a></p>';
+        }
+        if (post.external_url) {
+          mediaHtml += '<p style="font-size:0.82rem;"><a href="' + post.external_url + '" target="_blank" rel="noopener">' + post.external_url + '</a></p>';
+        }
+        card.innerHTML =
+          '<p style="color:var(--text-muted);font-size:0.78rem;margin-bottom:4px;">' +
+            postTypeLabel(post.post_type) + " · " + (post.visibility === "public" ? "Public" : "Membres") +
+            (post.author ? " · " + post.author : "") +
+          '</p>' +
+          '<h3 style="margin-bottom:6px;"></h3>' +
+          '<p></p>' +
+          mediaHtml +
+          '<button type="button" class="btn btn-outline" style="margin-top:10px;font-size:0.8rem;padding:6px 14px;">Supprimer</button>';
+        card.querySelector("h3").textContent = post.title;
+        card.querySelector("p:nth-of-type(2)").textContent = post.body || "";
+        card.querySelector("button").addEventListener("click", function () {
+          if (!confirm("Supprimer cette publication ?")) return;
+          api("/api/posts/" + post.id, { method: "DELETE" }).then(function () { loadPosts(); });
+        });
+        postsList.appendChild(card);
+      });
+    }
+
+    function loadPosts() {
+      api("/api/posts").then(function (r) {
+        if (r.ok) renderPosts(r.data);
+      });
+    }
+
+    function loadSubscribers() {
+      api("/api/admin/subscribers").then(function (r) {
+        if (!r.ok) return;
+        if (!r.data.length) {
+          subscribersList.innerHTML = '<p style="color:var(--text-muted);">Aucun abonné pour le moment.</p>';
+          return;
+        }
+        subscribersList.innerHTML = "<p style='color:var(--text-muted);font-size:0.85rem;'>" + r.data.length + " abonné(s) : " +
+          r.data.map(function (s) { return s.email; }).join(", ") + "</p>";
+      });
+    }
+
+    postForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      postError.style.display = "none";
+      var formData = new FormData(postForm);
+      api("/api/posts", { method: "POST", body: formData }).then(function (r) {
+        if (r.ok) {
+          postForm.reset();
+          loadPosts();
+        } else {
+          postError.textContent = r.data.error || "Erreur lors de la publication.";
+          postError.style.display = "block";
+        }
+      }).catch(function () {
+        postError.textContent = "Impossible de joindre le serveur d'administration.";
+        postError.style.display = "block";
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
