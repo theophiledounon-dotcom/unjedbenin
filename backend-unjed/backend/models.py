@@ -9,7 +9,7 @@ db = SQLAlchemy()
 
 
 class Admin(db.Model):
-    """Compte administrateur sécurisé."""
+    """Compte administrateur."""
     __tablename__ = "admins"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -29,13 +29,7 @@ class Admin(db.Model):
 
 
 class Post(db.Model):
-    """
-    Publications des administrateurs :
-    - 'announcement' : Annonces textuelles / communiqués (vers Actualités)
-    - 'decision'     : Décisions officielles avec fichier PDF téléchargeable (vers Actualités)
-    - 'image'        : Photos des activités (vers Multimédia)
-    - 'video'        : Vidéos des activités (vers Multimédia)
-    """
+    """Publications : annonces, documents/décisions PDF, photos et vidéos."""
     __tablename__ = "posts"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -44,8 +38,8 @@ class Post(db.Model):
     post_type = db.Column(db.String(30), nullable=False, default="announcement")
     visibility = db.Column(db.String(10), nullable=False, default="public")
     file_url = db.Column(db.String(500), nullable=True)
-    original_filename = db.Column(db.String(255), nullable=True)  # Nom du PDF pour le téléchargement
-    external_url = db.Column(db.String(500), nullable=True)      # Lien YouTube / vidéo
+    original_filename = db.Column(db.String(255), nullable=True)
+    external_url = db.Column(db.String(500), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=True)
 
@@ -66,8 +60,20 @@ class Post(db.Model):
         }
 
 
+class Subscriber(db.Model):
+    """Abonnés aux actualités."""
+    __tablename__ = "subscribers"
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {"id": self.id, "email": self.email, "created_at": self.created_at.isoformat()}
+
+
 class Member(db.Model):
-    """Adhésions reçues en ligne."""
+    """Demandes d'adhésion en ligne."""
     __tablename__ = "members"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -97,7 +103,7 @@ class Member(db.Model):
 
 
 class ContactMessage(db.Model):
-    """Messages envoyés depuis la page Contact."""
+    """Messages de la page Contact."""
     __tablename__ = "contact_messages"
 
     id = db.Column(db.Integer, primary_key=True)
