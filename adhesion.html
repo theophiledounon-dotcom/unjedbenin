@@ -275,49 +275,67 @@
                 <label for="phone" data-en="Phone">Téléphone</label>
                 <input type="tel" id="phone" name="phone" placeholder="+229 ..." required />
               </div>
-            </div>
-            <div class="form-row">
-              <div class="field">
-                <label for="country" data-en="Country">Pays</label>
-                <select id="country" name="country" required onchange="
-                  var isBenin = this.value === 'Bénin';
-                  document.getElementById('dept-wrap').hidden = !isBenin;
-                  document.getElementById('dept').required = isBenin;
-                  document.getElementById('region-wrap').hidden = isBenin;
-                  document.getElementById('region').required = !isBenin;
-                ">
-                  <option value="" data-en="Choose...">Choisir...</option>
-                  <option data-en="Benin">Bénin</option>
-                  <option data-en="Togo">Togo</option>
-                  <option data-en="Nigeria">Nigéria</option>
-                  <option data-en="Ghana">Ghana</option>
-                  <option data-en="Niger">Niger</option>
-                  <option data-en="Burkina Faso">Burkina Faso</option>
-                  <option data-en="Ivory Coast">Côte d'Ivoire</option>
-                  <option data-en="Senegal">Sénégal</option>
-                  <option data-en="Mali">Mali</option>
-                  <option data-en="Cameroon">Cameroun</option>
-                  <option data-en="France">France</option>
-                  <option data-en="Canada">Canada</option>
-                  <option data-en="United States">États-Unis</option>
-                  <option data-en="Other">Autre</option>
-                </select>
-              </div>
-              <div class="field" id="dept-wrap">
-                <label for="dept" data-en="Department (Benin)">Département (Bénin)</label>
-                <select id="dept" name="dept">
-                  <option value="" data-en="Choose...">Choisir...</option>
-                  <option>Alibori</option><option>Atacora</option><option>Atlantique</option>
-                  <option>Borgou</option><option>Collines</option><option>Couffo</option>
-                  <option>Donga</option><option>Littoral</option><option>Mono</option>
-                  <option>Ouémé</option><option>Plateau</option><option>Zou</option>
-                </select>
-              </div>
-              <div class="field" id="region-wrap" hidden>
-                <label for="region" data-en="City / Region">Ville / Région</label>
-                <input type="text" id="region" name="region" />
-              </div>
-            </div>
+            </div><div class="form-row">
+  <div class="field">
+    <label for="country">Pays</label>
+    <select id="country" name="country" required onchange="
+      var val = this.value;
+      var isBenin = (val === 'Bénin');
+      var isOther = (val === 'Autre');
+      
+      // Afficher département pour le Bénin, région pour l'étranger
+      document.getElementById('dept-wrap').hidden = !isBenin;
+      document.getElementById('dept').required = isBenin;
+      document.getElementById('region-wrap').hidden = isBenin;
+      
+      // Afficher le champ libre si 'Autre' est choisi
+      var otherWrap = document.getElementById('country-other-wrap');
+      var otherInput = document.getElementById('country-other');
+      otherWrap.hidden = !isOther;
+      otherInput.required = isOther;
+      if (!isOther) otherInput.value = '';
+    ">
+      <option value="">Choisir...</option>
+      <option>Bénin</option>
+      <option>Togo</option>
+      <option>Nigéria</option>
+      <option>Ghana</option>
+      <option>Niger</option>
+      <option>Burkina Faso</option>
+      <option>Côte d'Ivoire</option>
+      <option>Sénégal</option>
+      <option>Mali</option>
+      <option>Cameroun</option>
+      <option>France</option>
+      <option>Canada</option>
+      <option>États-Unis</option>
+      <option value="Autre">Autre</option>
+    </select>
+  </div>
+
+  <!-- Champ texte libre qui s'affiche si 'Autre' est sélectionné -->
+  <div class="field" id="country-other-wrap" hidden>
+    <label for="country-other">Précisez votre pays</label>
+    <input type="text" id="country-other" name="country_other" placeholder="Ex : Gabon, Belgique, Allemagne..." />
+  </div>
+
+  <div class="field" id="dept-wrap">
+    <label for="dept">Département (Bénin)</label>
+    <select id="dept" name="dept">
+      <option value="">Choisir...</option>
+      <option>Alibori</option><option>Atacora</option><option>Atlantique</option>
+      <option>Borgou</option><option>Collines</option><option>Couffo</option>
+      <option>Donga</option><option>Littoral</option><option>Mono</option>
+      <option>Ouémé</option><option>Plateau</option><option>Zou</option>
+    </select>
+  </div>
+
+  <div class="field" id="region-wrap" hidden>
+    <label for="region">Ville / Région</label>
+    <input type="text" id="region" name="region" />
+  </div>
+</div>
+
             <div class="form-row">
               <div class="field">
                 <label for="profile" data-en="Profile">Profil</label>
